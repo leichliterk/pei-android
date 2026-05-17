@@ -1,22 +1,31 @@
 import {
   bootstrapApplication,
   provideNativeScriptHttpClient,
+  provideNativeScriptNgZone,
   provideNativeScriptRouter,
   runNativeScriptAngularApp,
 } from '@nativescript/angular';
-import { provideZonelessChangeDetection } from '@angular/core';
-import { withInterceptorsFromDi } from '@angular/common/http';
+import { withInterceptorsFromDi, withInterceptors } from '@angular/common/http';
 import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
+import { authInterceptor } from './app/services/auth.interceptor';
 
 runNativeScriptAngularApp({
   appModuleBootstrap: () => {
     return bootstrapApplication(AppComponent, {
       providers: [
-        provideNativeScriptHttpClient(withInterceptorsFromDi()),
+        provideNativeScriptNgZone(),
+        provideNativeScriptHttpClient(
+          withInterceptorsFromDi(),
+          withInterceptors([authInterceptor])
+        ),
         provideNativeScriptRouter(routes),
-        provideZonelessChangeDetection(),
       ],
+    }).catch(err => {
+      console.error('=== PEI BOOTSTRAP ERROR ===');
+      console.error('Message:', err?.message);
+      console.error('Stack:', err?.stack);
+      throw err;
     });
   },
 });

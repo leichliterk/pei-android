@@ -1,0 +1,36 @@
+<GridLayout rows="auto" backgroundColor="#1C1C1E" borderRadius="12" class="p-4 mb-1" (tap)="onTap()">
+  <StackLayout>
+
+    <!-- Header: name + status badge -->
+    <GridLayout columns="*, auto" class="mb-3">
+      <StackLayout col="0">
+        <Label [text]="siteData.name" color="#FFFFFF" class="text-lg font-semibold"></Label>
+        <Label [text]="'Site ID: ' + siteData.site_id" color="#8E8E93" class="text-xs"></Label>
+      </StackLayout>
+      <StackLayout col="1" horizontalAlignment="right">
+        <Label [text]="statusLabel" [backgroundColor]="statusColor" color="#FFFFFF" borderRadius="12" class="text-xs font-bold px-3 py-1"></Label>
+        <Label [text]="formattedTimestamp" color="#8E8E93" class="text-xs mt-1"></Label>
+      </StackLayout>
+    </GridLayout>
+
+    @if (activeTags.length > 0) {
+      <StackLayout backgroundColor="#38383A" height="1" class="mb-2"></StackLayout>
+
+      @for (tag of activeTags; track tag.name; let last = $last) {
+        <GridLayout columns="*, auto" class="py-2">
+          <Label col="0" [text]="tag.displayName" color="#8E8E93" class="text-xs"></Label>
+          <Label col="1" [text]="tagValue(tag)" color="#FFFFFF" class="text-xs font-semibold"></Label>
+        </GridLayout>
+        @if (!last) {
+          <StackLayout backgroundColor="#38383A" height="1"></StackLayout>
+        }
+      }
+    }
+
+    @if (activeTags.length === 0) {
+      <StackLayout backgroundColor="#38383A" height="1" class="mb-2"></StackLayout>
+      <Label text="Waiting for data..." color="#636366" class="text-xs text-center py-2"></Label>
+    }
+
+  </StackLayout>
+</GridLayout>

@@ -1,0 +1,59 @@
+<ActionBar [title]="siteData?.name ?? 'Site'">
+  <NavigationButton text="Back" android.systemIcon="ic_menu_back" (tap)="goBack()"></NavigationButton>
+</ActionBar>
+
+<GridLayout backgroundColor="#0F0F0F">
+  @if (loading) {
+    <ActivityIndicator [busy]="true" color="#0A84FF"></ActivityIndicator>
+  }
+
+  @if (!loading) {
+    <ScrollView>
+      <StackLayout class="px-4 py-4">
+
+        <!-- Status Card -->
+        <GridLayout backgroundColor="#1C1C1E" borderRadius="12" class="p-4 mb-4" rows="auto,auto" columns="*,*">
+          <StackLayout row="0" col="0">
+            <Label text="Status" color="#8E8E93" class="text-xs mb-1"></Label>
+            <Label [text]="siteData?.connection_status" [color]="statusColor" class="text-base font-bold"></Label>
+          </StackLayout>
+          <StackLayout row="0" col="1">
+            <Label text="Session Uptime" color="#8E8E93" class="text-xs mb-1"></Label>
+            <Label [text]="uptime" color="#FFFFFF" class="text-base font-bold"></Label>
+          </StackLayout>
+          <StackLayout row="1" col="0" class="mt-3">
+            <Label text="30-Day Uptime" color="#8E8E93" class="text-xs mb-1"></Label>
+            <Label [text]="uptimePercent" color="#FFFFFF" class="text-base font-bold"></Label>
+          </StackLayout>
+          <StackLayout row="1" col="1" class="mt-3">
+            <Label text="App Version" color="#8E8E93" class="text-xs mb-1"></Label>
+            <Label [text]="siteData?.app_version ?? '--'" color="#FFFFFF" class="text-base font-bold"></Label>
+          </StackLayout>
+        </GridLayout>
+
+        <!-- Live Readings Card -->
+        <StackLayout backgroundColor="#1C1C1E" borderRadius="12" class="p-4 mb-4">
+          <GridLayout columns="*, auto" class="mb-3">
+            <Label col="0" text="Live Readings" color="#FFFFFF" class="text-base font-bold"></Label>
+            <Label col="1" [text]="lastTimestamp ? 'Live' : 'Waiting...'" color="#30D158" class="text-xs"></Label>
+          </GridLayout>
+
+          @if (activeTags.length === 0) {
+            <Label text="No data received yet" color="#636366" class="text-sm text-center"></Label>
+          }
+
+          @for (tag of activeTags; track tag.name; let last = $last) {
+            <GridLayout columns="*, auto" class="py-2">
+              <Label col="0" [text]="tag.displayName" color="#8E8E93" class="text-sm"></Label>
+              <Label col="1" [text]="tagValue(tag)" color="#FFFFFF" class="text-sm font-semibold"></Label>
+            </GridLayout>
+            @if (!last) {
+              <StackLayout backgroundColor="#38383A" height="1"></StackLayout>
+            }
+          }
+        </StackLayout>
+
+      </StackLayout>
+    </ScrollView>
+  }
+</GridLayout>

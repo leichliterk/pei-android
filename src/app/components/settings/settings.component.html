@@ -1,0 +1,41 @@
+<ActionBar title="Settings"></ActionBar>
+
+<ScrollView backgroundColor="#0F0F0F">
+  <StackLayout class="px-4 py-6">
+
+    <!-- User Profile Card -->
+    <StackLayout backgroundColor="#1C1C1E" borderRadius="12" class="p-5 mb-6" horizontalAlignment="center">
+      <Label [text]="userInitials" backgroundColor="#0A84FF" color="#FFFFFF" borderRadius="32" width="64" height="64" class="text-3xl font-bold text-center"></Label>
+      <Label [text]="userProfile?.name ?? 'Unknown User'" color="#FFFFFF" class="text-lg font-bold mt-3 text-center"></Label>
+      <Label [text]="userProfile?.email ?? ''" color="#8E8E93" class="text-sm mt-1 text-center"></Label>
+    </StackLayout>
+
+    <!-- App Info Card -->
+    <StackLayout backgroundColor="#1C1C1E" borderRadius="12" class="p-4 mb-4">
+      <Label text="APPLICATION" color="#8E8E93" class="text-xs font-semibold mb-3"></Label>
+
+      <GridLayout columns="*,auto" class="py-3">
+        <Label col="0" text="App Name" color="#8E8E93" class="text-sm"></Label>
+        <Label col="1" text="PEI Monitor" color="#FFFFFF" class="text-sm"></Label>
+      </GridLayout>
+
+      <StackLayout backgroundColor="#38383A" height="1"></StackLayout>
+
+      <GridLayout columns="*,auto" class="py-3">
+        <Label col="0" text="Environment" color="#8E8E93" class="text-sm"></Label>
+        <Label col="1" text="Staging" color="#FFFFFF" class="text-sm"></Label>
+      </GridLayout>
+    </StackLayout>
+
+    <!-- Sign Out -->
+    <Button
+      text="Sign Out"
+      (tap)="logout()"
+      backgroundColor="#FF453A"
+      color="#FFFFFF"
+      borderRadius="10"
+      class="font-semibold py-4 mt-4">
+    </Button>
+
+  </StackLayout>
+</ScrollView>

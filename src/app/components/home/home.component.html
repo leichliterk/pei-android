@@ -1,0 +1,23 @@
+<ActionBar title="PEI Data Monitor">
+  <ActionItem text="☰" android.position="actionBar" ios.position="right" (tap)="showMenu()"></ActionItem>
+</ActionBar>
+
+<GridLayout backgroundColor="#0F0F0F">
+  @if (loading) {
+    <ActivityIndicator [busy]="loading" color="#0A84FF"></ActivityIndicator>
+  }
+  @if (!loading) {
+    <ScrollView>
+      <StackLayout class="px-4 py-4">
+        @for (site of sortedSites; track site.site_id) {
+          <app-site-card
+            [siteData]="site"
+            [snapshot]="snapshots[site.site_id]"
+            (siteTap)="navigateToSite(site)"
+            class="mb-3">
+          </app-site-card>
+        }
+      </StackLayout>
+    </ScrollView>
+  }
+</GridLayout>
