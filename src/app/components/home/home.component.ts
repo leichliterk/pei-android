@@ -6,6 +6,7 @@ import { Site } from '../../services/site.service';
 import { TenantService, Tenant, TenantSite } from '../../services/tenant.service';
 import { WebSocketService, PlcSnapshot } from '../../services/websocket.service';
 import { AuthService } from '../../services/auth.service';
+import { NotificationService } from '../../services/notification.service';
 import { SiteCardComponent } from '../site-card/site-card.component';
 
 @Component({
@@ -31,10 +32,13 @@ export class HomeComponent implements OnInit, OnDestroy {
     private tenantService: TenantService,
     private webSocketService: WebSocketService,
     private authService: AuthService,
+    private notificationService: NotificationService,
     private router: RouterExtensions
   ) {}
 
   ngOnInit(): void {
+    this.notificationService.initFcm();
+
     this.tenantService.getTenantById(1001).subscribe({
       next: (t) => {
         this.tenant = t;
@@ -88,9 +92,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   showMenu(): void {
-    const label = this.authService.isAuthenticated ? 'Logout' : 'Login';
-    Dialogs.action({ cancelButtonText: 'Cancel', actions: [label] }).then(result => {
-      if (result === 'Logout') {
+    const authLabel = this.authService.isAuthenticated ? 'Logout' : 'Login';
+    Dialogs.action({ cancelButtonText: 'Cancel', actions: ['Settings', authLabel] }).then(result => {
+      if (result === 'Settings') {
+        this.router.navigate(['/settings']);
+      } else if (result === 'Logout') {
         this.authService.logout();
         this.router.navigate(['/login'], { clearHistory: true });
       } else if (result === 'Login') {

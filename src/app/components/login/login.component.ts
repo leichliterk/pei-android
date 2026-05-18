@@ -22,7 +22,6 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.router.navigate(['/home'], { clearHistory: true });
       return;
     }
-    // Navigate as soon as token exchange completes
     this.authSub = this.authService.isAuthenticated$.pipe(
       filter(v => v)
     ).subscribe(() => {

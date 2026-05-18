@@ -1,0 +1,105 @@
+<ActionBar backgroundColor="#1C1C1E">
+  <NavigationButton text="Cancel" (tap)="goBack()" color="#0A84FF"></NavigationButton>
+  <Label text="New Alert Rule" color="#FFFFFF" class="font-semibold text-lg"></Label>
+</ActionBar>
+
+<ScrollView backgroundColor="#0F0F0F" keyboardShouldPersistTaps="always">
+  <StackLayout class="px-4 py-6">
+
+    @if (loading) {
+      <ActivityIndicator busy="true" color="#0A84FF" horizontalAlignment="center" class="mt-10"></ActivityIndicator>
+    } @else {
+
+      <!-- Site -->
+      <Label text="SITE" color="#8E8E93" class="text-xs font-semibold mb-2"></Label>
+      <StackLayout backgroundColor="#1C1C1E" borderRadius="12" class="p-4 mb-5">
+        <ListPicker
+          [items]="siteNames"
+          [selectedIndex]="selectedSiteIndex"
+          (selectedIndexChange)="onSiteSelected($event)"
+          color="#FFFFFF"
+          backgroundColor="#1C1C1E">
+        </ListPicker>
+      </StackLayout>
+
+      <!-- Tag -->
+      <Label text="DATA POINT" color="#8E8E93" class="text-xs font-semibold mb-2"></Label>
+      <StackLayout backgroundColor="#1C1C1E" borderRadius="12" class="p-4 mb-5">
+        @if (tags.length === 0) {
+          <Label
+            [text]="errorMessage || 'No live data available yet'"
+            color="#636366"
+            class="text-sm text-center py-4">
+          </Label>
+        } @else {
+          <ListPicker
+            [items]="tagNames"
+            [selectedIndex]="selectedTagIndex"
+            (selectedIndexChange)="onTagSelected($event)"
+            color="#FFFFFF"
+            backgroundColor="#1C1C1E">
+          </ListPicker>
+        }
+      </StackLayout>
+
+      <!-- Operator + Threshold (only when tags are available) -->
+      @if (tags.length > 0) {
+        <Label text="CONDITION" color="#8E8E93" class="text-xs font-semibold mb-2"></Label>
+        <StackLayout backgroundColor="#1C1C1E" borderRadius="12" class="p-4 mb-5">
+          <ListPicker
+            [items]="operatorLabels"
+            [selectedIndex]="selectedOperatorIndex"
+            (selectedIndexChange)="onOperatorSelected($event)"
+            color="#FFFFFF"
+            backgroundColor="#1C1C1E">
+          </ListPicker>
+        </StackLayout>
+
+        <Label text="THRESHOLD VALUE" color="#8E8E93" class="text-xs font-semibold mb-2"></Label>
+        <StackLayout backgroundColor="#1C1C1E" borderRadius="12" class="p-4 mb-5">
+          <TextField
+            [(ngModel)]="thresholdText"
+            hint="e.g. 100"
+            keyboardType="number"
+            color="#FFFFFF"
+            placeholderColor="#636366"
+            backgroundColor="transparent"
+            class="text-base">
+          </TextField>
+        </StackLayout>
+
+        <Label text="RULE LABEL (optional)" color="#8E8E93" class="text-xs font-semibold mb-2"></Label>
+        <StackLayout backgroundColor="#1C1C1E" borderRadius="12" class="p-4 mb-6">
+          <TextField
+            [(ngModel)]="label"
+            hint="e.g. High CH4 at Site A"
+            color="#FFFFFF"
+            placeholderColor="#636366"
+            backgroundColor="transparent"
+            class="text-base">
+          </TextField>
+        </StackLayout>
+
+        @if (errorMessage) {
+          <Label [text]="errorMessage" color="#FF453A" class="text-sm text-center mb-4"></Label>
+        }
+
+        <Button
+          text="Save Rule"
+          (tap)="save()"
+          [isEnabled]="canSave && !saving"
+          [backgroundColor]="canSave && !saving ? '#0A84FF' : '#38383A'"
+          color="#FFFFFF"
+          borderRadius="10"
+          class="font-semibold py-4">
+        </Button>
+        @if (saving) {
+          <ActivityIndicator busy="true" color="#0A84FF" horizontalAlignment="center" class="mt-4"></ActivityIndicator>
+        }
+      } @else if (errorMessage) {
+        <Label [text]="errorMessage" color="#FF453A" class="text-sm text-center mb-4"></Label>
+      }
+
+    }
+  </StackLayout>
+</ScrollView>

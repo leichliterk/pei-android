@@ -1,0 +1,49 @@
+<ActionBar backgroundColor="#1C1C1E">
+  <NavigationButton text="Back" (tap)="goBack()" color="#0A84FF"></NavigationButton>
+  <Label text="Alert Rules" color="#FFFFFF" class="font-semibold text-lg"></Label>
+  <ActionItem text="+" (tap)="addRule()" ios.position="right" android.position="actionBar" color="#0A84FF" class="text-2xl"></ActionItem>
+</ActionBar>
+
+<ScrollView backgroundColor="#0F0F0F">
+  <StackLayout class="px-4 py-6">
+
+    @if (loading) {
+      <ActivityIndicator busy="true" color="#0A84FF" horizontalAlignment="center" class="mt-10"></ActivityIndicator>
+    } @else if (rules.length === 0) {
+      <StackLayout horizontalAlignment="center" class="mt-16">
+        <Label text="No alert rules yet" color="#8E8E93" class="text-base text-center"></Label>
+        <Label text="Tap + to add your first rule" color="#636366" class="text-sm text-center mt-2"></Label>
+        <Button text="Add Rule" (tap)="addRule()" backgroundColor="#0A84FF" color="#FFFFFF" borderRadius="10" class="font-semibold py-3 mt-6 w-40"></Button>
+      </StackLayout>
+    } @else {
+      @for (rule of rules; track rule.id) {
+        <StackLayout backgroundColor="#1C1C1E" borderRadius="12" class="p-4 mb-3">
+          <GridLayout columns="*, auto">
+            <StackLayout col="0">
+              <Label [text]="rule.label || rule.tag_display_name" color="#FFFFFF" class="text-sm font-semibold"></Label>
+              <Label [text]="rule.site_name" color="#8E8E93" class="text-xs mt-1"></Label>
+              <Label
+                [text]="rule.tag_display_name + ' ' + operatorLabel(rule.operator) + ' ' + rule.threshold + (rule.tag_unit ? ' ' + rule.tag_unit : '')"
+                color="#0A84FF"
+                class="text-xs mt-2">
+              </Label>
+            </StackLayout>
+            <Switch col="1" [checked]="rule.enabled" (checkedChange)="toggleRule(rule)" verticalAlignment="center"></Switch>
+          </GridLayout>
+
+          <StackLayout backgroundColor="#38383A" height="1" class="mt-3 mb-2"></StackLayout>
+
+          <Button
+            text="Delete"
+            (tap)="deleteRule(rule)"
+            backgroundColor="transparent"
+            color="#FF453A"
+            class="text-sm p-0"
+            horizontalAlignment="left">
+          </Button>
+        </StackLayout>
+      }
+    }
+
+  </StackLayout>
+</ScrollView>

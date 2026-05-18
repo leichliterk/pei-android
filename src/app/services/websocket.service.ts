@@ -52,6 +52,9 @@ export class WebSocketService implements OnDestroy {
   plcSnapshot$: Observable<PlcSnapshot> = this.plcSnapshotSubject.asObservable();
   plcTags$: Observable<PlcSnapshot> = this.plcTagsSubject.asObservable();
 
+  // Latest snapshot per site_id — used by the add-rule screen to enumerate available tags
+  readonly latestSnapshots = new Map<number, PlcSnapshot>();
+
   constructor(private ngZone: NgZone) {}
 
   connect(): void {
@@ -207,9 +210,12 @@ export class WebSocketService implements OnDestroy {
 
   private dispatchEvent(event: string, data: any): void {
     switch (event) {
-      case 'plc:snapshot':
-        this.plcSnapshotSubject.next(data as PlcSnapshot);
+      case 'plc:snapshot': {
+        const snap = data as PlcSnapshot;
+        this.latestSnapshots.set(snap.site_id, snap);
+        this.plcSnapshotSubject.next(snap);
         break;
+      }
       case 'plc:tags':
         this.plcTagsSubject.next(data as PlcSnapshot);
         break;

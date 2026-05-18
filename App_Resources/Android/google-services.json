@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "24770775101",
+    "project_id": "org-sv-pei-data",
+    "storage_bucket": "org-sv-pei-data.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:24770775101:android:6ded0e80ffed68db2c0254",
+        "android_client_info": {
+          "package_name": "org.sv.pei"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDK6ufgJJJVgfq2fGReqIhKVNhdy7URYvA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
