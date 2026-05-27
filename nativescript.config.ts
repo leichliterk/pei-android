@@ -1,7 +1,7 @@
 import { NativeScriptConfig } from '@nativescript/core';
 
 export default {
-  id: 'org.sv.pei',
+  id: 'org.sv.pei.monitor',
   appPath: 'src',
   appResourcesPath: 'App_Resources',
   android: {
