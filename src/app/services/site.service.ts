@@ -2,6 +2,15 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { PlcTag } from './websocket.service';
+
+export interface PlcSnapshot {
+  _id?: string;
+  timestamp: string;
+  site_id: number;
+  tenant_id: number;
+  tags: PlcTag[];
+}
 
 export interface Site {
   site_id: number;
@@ -88,5 +97,9 @@ export class SiteService {
 
   downloadFile(file_id: string): Observable<ArrayBuffer> {
     return this.http.get(`${environment.API_SERVER}/files/download/${file_id}`, { responseType: 'arraybuffer' });
+  }
+
+  getSiteSnapshots(tenant_id: number, site_id: number): Observable<PlcSnapshot[]> {
+    return this.http.get<PlcSnapshot[]>(`${environment.API_SERVER}/plc/${tenant_id}/${site_id}/snapshots`);
   }
 }

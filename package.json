@@ -12,6 +12,7 @@
     "@angular/platform-browser": "~20.2.0",
     "@angular/platform-browser-dynamic": "~20.2.0",
     "@angular/router": "~20.2.0",
+    "@nativescript-community/ui-chart": "^2.0.29",
     "@nativescript/android": "^9.0.2",
     "@nativescript/angular": "^20.0.0",
     "@nativescript/core": "~9.0.0",

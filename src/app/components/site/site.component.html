@@ -31,6 +31,54 @@
           </StackLayout>
         </GridLayout>
 
+        <!-- Trend Chart Card -->
+        <StackLayout backgroundColor="#1C1C1E" borderRadius="12" class="mb-4">
+
+          <!-- Header -->
+          <GridLayout columns="*, auto" class="px-4 pt-4 pb-2">
+            <StackLayout col="0" orientation="horizontal">
+              <Label text="Trend" color="#FFFFFF" class="text-base font-bold"></Label>
+              @if (selectedTag?.unit) {
+                <Label [text]="' (' + selectedTag!.unit + ')'" color="#8E8E93" class="text-sm"></Label>
+              }
+            </StackLayout>
+            <Label col="1" text="Latest ›" color="#0A84FF" class="text-sm" (tap)="scrollToLatest()"></Label>
+          </GridLayout>
+
+          <!-- Tag selector chips -->
+          @if (chartableTags.length > 0) {
+            <ScrollView orientation="horizontal" class="px-4 pb-3">
+              <StackLayout orientation="horizontal">
+                @for (tag of chartableTags; track tag.name) {
+                  <Label
+                    [text]="tag.displayName"
+                    (tap)="selectTag(tag.name)"
+                    [backgroundColor]="selectedTagName === tag.name ? '#0A84FF' : '#2C2C2E'"
+                    color="#FFFFFF"
+                    borderRadius="12"
+                    class="text-xs px-3 py-1 mr-2">
+                  </Label>
+                }
+              </StackLayout>
+            </ScrollView>
+          }
+
+          <!-- Chart -->
+          @if (chartableTags.length > 0) {
+            <GridLayout height="220" (pan)="onChartPan($event)">
+              <LineChart
+                height="220"
+                backgroundColor="#1C1C1E"
+                (loaded)="onChartLoaded($event.object)">
+              </LineChart>
+            </GridLayout>
+            <Label text="← Swipe to scroll history" color="#636366" class="text-xs text-center pb-3"></Label>
+          } @else {
+            <Label text="No numeric data available yet" color="#636366" class="text-sm text-center py-6"></Label>
+          }
+
+        </StackLayout>
+
         <!-- Live Readings Card -->
         <StackLayout backgroundColor="#1C1C1E" borderRadius="12" class="p-4 mb-4">
           <GridLayout columns="*, auto" class="mb-3">

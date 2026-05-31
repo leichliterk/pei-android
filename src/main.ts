@@ -1,14 +1,20 @@
+import { install } from '@nativescript-community/gesturehandler';
+install();
+
 import {
   bootstrapApplication,
   provideNativeScriptHttpClient,
   provideNativeScriptNgZone,
   provideNativeScriptRouter,
   runNativeScriptAngularApp,
+  registerElement,
 } from '@nativescript/angular';
 import { withInterceptorsFromDi, withInterceptors } from '@angular/common/http';
 import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
 import { authInterceptor } from './app/services/auth.interceptor';
+
+registerElement('LineChart', () => require('@nativescript-community/ui-chart/charts/LineChart').LineChart);
 
 runNativeScriptAngularApp({
   appModuleBootstrap: () => {
